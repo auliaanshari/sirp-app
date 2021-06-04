@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function krs(){
         return $this->hasMany(KRS::class);
     }
+
+    // public function absensi(){
+    //     return $this->belongsToMany(Absensi::class)->using(KRS::class, 'krs', 'id', 'user_id');
+    // }
 }

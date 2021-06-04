@@ -45,4 +45,23 @@ class KRSController extends Controller
         $user = User::all();
         return $user->toJson();
     }
+
+    public function combo_kelas1($id)
+    {
+        $kelas = Kelas::where('id', $id)->get();
+        // echo($kelas);
+        return $kelas->toJson();
+    }
+
+    public function combo_user1($id)
+    {
+        $user1 = KRS::select('user_id')->where('kelas_id', $id)->get();
+        
+        // $user2 = $user1->user_id;
+        
+        $user = User::whereNotIn('id', $user1)->get();
+        
+        // echo($user);
+        return $user->toJson();
+    }
 }

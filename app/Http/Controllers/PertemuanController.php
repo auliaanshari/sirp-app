@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pertemuan;
 use App\Models\Kelas;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -13,6 +14,12 @@ class PertemuanController extends Controller
     {
         $pertemuan = Pertemuan::with('kelas');
         return DataTables::of($pertemuan)->toJson();
+    }
+
+    public function data_absensi($id)
+    {
+        $user = Absensi::where('pertemuan_id',$id)->with('krs','user')->get();
+        return DataTables::of($user)->toJson();
     }
 
     public function create(Request $request){
@@ -40,6 +47,12 @@ class PertemuanController extends Controller
     public function combo_kelas()
     {
         $kelas = Kelas::all();
+        return $kelas->toJson();
+    }
+
+    public function combo_kelas1($id)
+    {
+        $kelas = Kelas::where('id', $id)->get();
         return $kelas->toJson();
     }
 }

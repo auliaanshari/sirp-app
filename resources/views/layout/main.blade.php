@@ -55,7 +55,16 @@
                                 </div>
                                 <span class="mr-4"> Admin <i class="anticon font-size-10 anticon-down"></i> </span>
                             </div>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown">
+                                    <a href="{{ url('logout') }}">
+                                    <i class="anticon anticon-gold"></i>
+                                    <span>Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+                        
                     </ul>
                 </div>
             </div>
@@ -81,16 +90,16 @@
     </div>
 </div>
 
-    <script src="js/vendors.min.js"></script>
+    <script src={{asset("js/vendors.min.js")}}></script>
 
-    <script src="js/app.min.js"></script>
+    <script src={{asset("js/app.min.js")}}></script>
 
-    <script src="vendors/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="vendors/datatables/dataTables.bootstrap.min.js" type="text/javascript"></script>
+    <script src={{asset("vendors/datatables/jquery.dataTables.min.js")}} type="text/javascript"></script>
+    <script src={{asset("vendors/datatables/dataTables.bootstrap.min.js")}} type="text/javascript"></script>
 
-    <script src="vendors/select2/select2.min.js"></script>
-    <script src="vendors/jquery-validation/jquery.validate.min.js"></script>
-    <script src="vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src={{asset("vendors/select2/select2.min.js")}}></script>
+    <script src={{asset("vendors/jquery-validation/jquery.validate.min.js")}}></script>
+    <script src={{asset("vendors/bootstrap-datepicker/bootstrap-datepicker.min.js")}}></script>
     <script type="text/javascript">
         $('.datepicker-input').datepicker({
             format: '{{ config('app.date_format_js') }}',

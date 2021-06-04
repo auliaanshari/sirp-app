@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Models\KRS;
+use App\Models\Pertemuan;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -17,9 +19,20 @@ class KelasController extends Controller
     public function detail($id)
     {
         $kelas = Kelas::where('id',$id)->get();
-        
-        // var_dump($kelas);
-        return view('kelas.detailkelas', compact('kelas'));
+        $kelas_id = $kelas[0]->id;
+        return view('kelas.detailkelas', compact('kelas','kelas_id'));
+    }
+
+    public function data_mahasiswa($id)
+    {
+        $user = KRS::where('kelas_id',$id)->with('kelas','user')->get();
+        return DataTables::of($user)->toJson();
+    }
+
+    public function data_pertemuan($id)
+    {
+        $user = Pertemuan::where('kelas_id',$id)->with('kelas')->get();
+        return DataTables::of($user)->toJson();
     }
 
     public function create(Request $request){

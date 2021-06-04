@@ -17,10 +17,10 @@ class CreateAbsensisTable extends Migration
             $table->id();
             $table->foreignId('krs_id')->constrained('krs')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('pertemuan_id')->constrained('pertemuan')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('status_kehadiran');
             $table->time('jam_masuk');
             $table->time('jam_keluar');
             $table->integer('durasi');
-            $table->string('file');
             // $table->timestamps();
         });
     }
