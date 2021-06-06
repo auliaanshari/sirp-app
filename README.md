@@ -1,3 +1,13 @@
+<span>Clone this repo.</span>
+<span>Make .env file </span>
+<span>Run 'php artisan key:generate' </span>
+<span>Make database</span>
+<span>Config .env file credential </span>
+<span>Run 'php artisan migrate' </span>
+<span>Run 'php artisan db:seed' </span>
+<span>Run 'php artisan serve' </span>
+<br>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
