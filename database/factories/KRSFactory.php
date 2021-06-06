@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\KRS;
+use App\Models\Kelas;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class KRSFactory extends Factory
@@ -21,8 +23,15 @@ class KRSFactory extends Factory
      */
     public function definition()
     {
-        return [
-            //
-        ];
+        $user = User::all()->random(1);
+        $kelas = Kelas::all()->random(1);
+        foreach($kelas as $kls):
+            foreach($user as $u):
+                return [
+                    'kelas_id' => $kls->id,
+                    'user_id' => $u->id,
+                ];
+            endforeach;
+        endforeach;
     }
 }

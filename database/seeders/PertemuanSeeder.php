@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Pertemuan;
 
 class PertemuanSeeder extends Seeder
 {
@@ -13,6 +14,6 @@ class PertemuanSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Pertemuan::factory()->count(20)->create();
     }
 }

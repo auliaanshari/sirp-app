@@ -4,7 +4,7 @@
 @section('content')
 
 
-
+<a href="/home">Home</a> > <a href="/kelas">Kelas</a> > <a href="">Detail Kelas</a> > <a href="">Detail Pertemuan</a>
 <div class="card">
     <div class="card-header">
         <div class="row">
@@ -14,14 +14,14 @@
                     Tanggal : {{$pertemuan[0]->tanggal}}
                 </h4>
             </div>
-            <div class="col-6 text-sm-right">
+            <!-- <div class="col-6 text-sm-right">
                 <h4 class="card-title">
                     <button class="btn btn-success m-r-5" id="add">
                         <i class="anticon anticon-plus"></i>
                        Tambah Data
                     </button>
                 </h4>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -34,8 +34,10 @@
                 <div class="mb-3"><b>Tahun</b></div>
                 <div class="mb-3"><b>Semester</b></div>
                 <div class="mb-3"><b>SKS</b></div>
+                <div class="mb-3"><b>File</b></div>
             </div>
             <div class="col-md-2">
+                <div class="mb-3"><span>:</span></div>
                 <div class="mb-3"><span>:</span></div>
                 <div class="mb-3"><span>:</span></div>
                 <div class="mb-3"><span>:</span></div>
@@ -50,6 +52,7 @@
                 <div class="mb-3"><span>{{$pertemuan[0]->kelas->tahun}}</span></div>
                 <div class="mb-3"><span>{{$pertemuan[0]->kelas->semester}}</span></div>
                 <div class="mb-3"><span>{{$pertemuan[0]->kelas->sks}}</span></div>
+                <div class="mb-3"><a href=""><span>{{$pertemuan[0]->file}}</span></a></div>
             </div>
         </div>
     </div>
@@ -73,11 +76,37 @@
                         <i class="anticon anticon-plus"></i>
                        Tambah Data
                     </button>
-                    <button class="btn btn-success m-r-5" id="add">
+                    <button class="btn btn-success m-r-5" id="addfile">
                         <i class="anticon anticon-plus"></i>
                        Upload File
                     </button>
                 </h4>
+            </div>
+        </div>
+            <div class="modal fade" id="modalfile">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Form Upload File</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <i class="anticon anticon-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formfile">
+                            {{ csrf_field() }}
+                            <div class="form-group" id="div_file">
+                                <label>File</label>
+                                <input required type="file" class="form-control" id="file_input" name="file_input" placeholder="...." >
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default mr-3" data-dismiss="modal">Keluar</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -148,7 +177,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default mr-3" data-dismiss="modal">Keluar</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" id="simpan" class="btn btn-primary">Simpan</button>
                         </div>
 
                     </form>
@@ -182,19 +211,19 @@
             $('#table').dataTable({
                  "ajax": "{{ url('pertemuan/detail/data_absensi', $pertemuan_id) }}",
                         "columns": [
-                            { "data": "krs.user.nim" },
-                            { "data": "krs.user.nama" },
+                            { "data": "nim" },
+                            { "data": "nama" },
                             { "data": "status_kehadiran" },
                             { "data": "jam_masuk" },
                             { "data": "jam_keluar" },
                             { "data": "durasi" },
-                            { "data": "krs.user.email" },
+                            { "data": "email" },
 
                             {
                                 data: 'id',
                                 sClass: 'text-center',
                                 render: function(data) {
-                                    return'<a href="{{ url('/detail/data') }}" data-id="'+data+'" id="detail" class="text-success" title="detail"><i class="anticon anticon-eye"></i> </a> &nbsp;'+
+                                    return'<a href="#" data-id="'+data+'" id="detail" class="text-success" title="detail"><i class="anticon anticon-eye"></i> </a> &nbsp;'+
                                         '<a href="#" data-id="'+data+'" id="edit" class="text-warning" title="edit"><i class="anticon anticon-edit"></i> </a> &nbsp;'+
                                         '<a href="#" data-id="'+data+'" id="delete" class="text-danger" title="hapus"><i class="anticon anticon-delete"></i> </a>';
                                 },
@@ -226,6 +255,11 @@
                 $('#form').attr('action', '{{ url('absensi/create') }}');
         });
 
+        $(document).on('click', '#addfile', function() {
+                $('#modalfile').modal('show');
+                $('#formfile').attr('action', '{{ url('pertemuan/updatefile', $pertemuan_id) }}');
+        });
+
 
         $('#form').submit(function(e) {
                 e.preventDefault();
@@ -249,7 +283,24 @@
                 });
         });
 
+        $('#formfile').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr('action')+'?_token='+'{{ csrf_token() }}',
+                    type: 'post',
+                    data: {
+                        'file_input': $('#file_input').val(),
+                    },
+                    success :function () {
+                        $('#modalfile').modal('hide');
+                        location.reload();
+                    },
+
+                });
+        });
+
         $(document).on('click', '#edit', function() {
+                enable_field();
                 var data = $('#table').DataTable().row($(this).parents('tr')).data();
                 $('#modal').modal('show');
                 $('#pertemuan').val(data.pertemuan_id).change();
@@ -260,6 +311,39 @@
                 $('#durasi_input').val(data.durasi).change();
                 $('#form').attr('action', '{{ url('absensi/update') }}/'+data.id);
         });
+
+        $(document).on('click', '#detail', function() {
+                disable_field();
+                var data = $('#table').DataTable().row($(this).parents('tr')).data();
+                $('#modal').modal('show');
+                $('#pertemuan').val(data.pertemuan_id).change();
+                $('#nim').val(data.krs_id).change();
+                $('#status').val(data.status_kehadiran).change();
+                $('#masuk_input').val(data.jam_masuk).change();
+                $('#keluar_input').val(data.jam_keluar).change();
+                $('#durasi_input').val(data.durasi).change();
+                $('#form').attr('action', '{{ url('absensi/update') }}/'+data.id);
+        });
+
+        function disable_field() {
+            document.getElementById("pertemuan").disabled = true;
+            document.getElementById("nim").disabled = true;
+            document.getElementById("status").disabled = true;
+            document.getElementById("masuk_input").disabled = true;
+            document.getElementById("keluar_input").disabled = true;
+            document.getElementById("durasi_input").disabled = true;
+            document.getElementById('simpan').style.visibility = 'hidden';
+        }
+
+        function enable_field() {
+            document.getElementById("pertemuan").disabled = false;
+            document.getElementById("nim").disabled = false;
+            document.getElementById("status").disabled = false;
+            document.getElementById("masuk_input").disabled = false;
+            document.getElementById("keluar_input").disabled = false;
+            document.getElementById("durasi_input").disabled = false;
+            document.getElementById('simpan').style.visibility = 'visible';
+        }
 
 
         $('#modal').on('hidden.bs.modal', function(e) {
@@ -291,12 +375,13 @@
             });
         
         $.ajax({
-                url: '{{ url('absensi/combo_user1', $pertemuan_id) }}',
+                url: '{{ url('absensi/combo_user1') }}',
                 dataType: "json",
                 success: function(data) {
                     var user = jQuery.parseJSON(JSON.stringify(data));
                     $.each(user, function(k, v) {
                         $('#nim').append($('<option>', {value:v.id}).text(v.nim + " - " + v.nama))
+                        
                     })
                 }
             });

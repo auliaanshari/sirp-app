@@ -19,13 +19,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('about');
+    return view('auth.login');
 });
 
 Auth::routes();
 Route::get('logout', function(){
     Auth::logout();
-    return redirect('login');
+    return redirect('auth.login');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -45,15 +45,28 @@ Route::group(['prefix' => 'kelas'], function () {
     Route::get('/delete/{id}', [KelasController::class, 'delete']);
     Route::get('/data', [KelasController::class, 'data']);
     Route::get('/detail/{id}', [KelasController::class, 'detail']);
+    Route::get('/detail1/{id}', [KelasController::class, 'detail1']);
     Route::get('/detail/data_mahasiswa/{id}', [KelasController::class, 'data_mahasiswa']);
     Route::get('/detail/data_pertemuan/{id}', [KelasController::class, 'data_pertemuan']);
     Route::get('/pertemuan/detail/{id}', [AbsensiController::class, 'detail']);
+    
+});
+
+Route::group(['prefix' => 'lihatkelas'], function () {
+    Route::get('/', function() { return view('kelas.lihatkelas'); });
+    Route::get('/data1', [KelasController::class, 'data1']);
+    Route::get('/data2', [KelasController::class, 'data2']);
+    Route::get('/detail/{id}', [KelasController::class, 'detail']);
+    Route::get('/detail/data_mahasiswa/{id}', [KelasController::class, 'data_mahasiswa']);
+    Route::get('/detail/data_pertemuan/{id}', [KelasController::class, 'data_pertemuan']);
+    Route::get('/pertemuan/detail/{id}', [AbsensiController::class, 'detail']);
+    
 });
 
 Route::group(['prefix' => 'pertemuan'], function () {
-    Route::get('/', function() { return view('kelas.pertemuankelas'); });
     Route::post('/create', [PertemuanController::class, 'create']);
     Route::post('/update/{id}', [PertemuanController::class, 'update']);
+    Route::post('/updatefile/{id}', [PertemuanController::class, 'updatefile']);
     Route::get('/delete/{id}', [PertemuanController::class, 'delete']);
     Route::get('/data', [PertemuanController::class, 'data']);
     Route::get('/detail/data_absensi/{id}', [PertemuanController::class, 'data_absensi']);
@@ -71,10 +84,10 @@ Route::group(['prefix' => 'peserta'], function () {
     Route::get('/combo_user', [KRSController::class, 'combo_user']);
     Route::get('/combo_kelas1/{id}', [KRSController::class, 'combo_kelas1']);
     Route::get('/combo_user1/{id}', [KRSController::class, 'combo_user1']);
+
 });
 
 Route::group(['prefix' => 'absensi'], function () {
-    Route::get('/', function() { return view('kelas.absensikelas'); });
     Route::post('/create', [AbsensiController::class, 'create']);
     Route::post('/update/{id}', [AbsensiController::class, 'update']);
     Route::get('/delete/{id}', [AbsensiController::class, 'delete']);
@@ -82,5 +95,5 @@ Route::group(['prefix' => 'absensi'], function () {
     Route::get('/combo_kelas', [AbsensiController::class, 'combo_kelas']);
     Route::get('/combo_user', [AbsensiController::class, 'combo_user']);
     Route::get('/combo_pertemuan1/{id}', [AbsensiController::class, 'combo_pertemuan1']);
-    Route::get('/combo_user1/{id}', [AbsensiController::class, 'combo_user1']);
+    Route::get('/combo_user1', [AbsensiController::class, 'combo_user1']);
 });

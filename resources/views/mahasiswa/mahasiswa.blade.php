@@ -4,7 +4,7 @@
 @section('content')
 
 
-
+<a href="/home">Home</a> > <a href="/mahasiswa">Data Mahasiswa</a>
 <div class="card">
     <div class="card-header">
         <div class="row">

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Absensi;
 
 class AbsensiSeeder extends Seeder
 {
@@ -13,6 +14,6 @@ class AbsensiSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Absensi::factory()->count(50)->create();
     }
 }

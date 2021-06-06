@@ -19,7 +19,7 @@ class CreatePertemuansTable extends Migration
             $table->integer('pertemuan_ke');
             $table->date('tanggal');
             $table->string('materi');
-            // $table->timestamps();
+            $table->string('file')->nullable();
         });
     }
 

@@ -21,7 +21,6 @@ class CreateKelasTable extends Migration
             $table->integer('tahun');
             $table->integer('semester');
             $table->integer('sks');
-            // $table->timestamps();
         });
     }
 

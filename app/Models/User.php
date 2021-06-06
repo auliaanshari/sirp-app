@@ -50,7 +50,4 @@ class User extends Authenticatable
         return $this->hasMany(KRS::class);
     }
 
-    // public function absensi(){
-    //     return $this->belongsToMany(Absensi::class)->using(KRS::class, 'krs', 'id', 'user_id');
-    // }
 }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Pertemuan;
 use App\Models\Kelas;
 use App\Models\Absensi;
+use App\Models\KRS;
+use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -18,8 +21,14 @@ class PertemuanController extends Controller
 
     public function data_absensi($id)
     {
-        $user = Absensi::where('pertemuan_id',$id)->with('krs','user')->get();
-        return DataTables::of($user)->toJson();
+        $data = DB::table('absensi')->leftjoin('pertemuan', 'pertemuan.id', '=', 'absensi.pertemuan_id')
+                    ->leftJoin('krs', 'absensi.krs_id', '=', 'krs.id')
+                    ->leftJoin('user', 'krs.user_id', '=', 'user.id')
+                    ->select('user.*', 'krs.*','absensi.*')
+                    ->where('pertemuan.id', $id)
+                    ->get();
+
+        return DataTables::of($data)->toJson();
     }
 
     public function create(Request $request){
@@ -40,6 +49,12 @@ class PertemuanController extends Controller
         $update->save();
     }
 
+    public function updatefile(Request $request, $id){
+        $update = Pertemuan::find($id);
+        $update->file = $request->file_input;
+        $update->save();
+    }
+
     public function delete($id){
         Pertemuan::where('id', $id)->delete();
     }
@@ -55,4 +70,5 @@ class PertemuanController extends Controller
         $kelas = Kelas::where('id', $id)->get();
         return $kelas->toJson();
     }
+    
 }

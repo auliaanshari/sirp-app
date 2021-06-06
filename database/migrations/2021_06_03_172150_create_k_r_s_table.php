@@ -17,7 +17,6 @@ class CreateKRSTable extends Migration
             $table->id();
             $table->foreignId('kelas_id')->constrained('kelas')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('user')->onUpdate('cascade')->onDelete('cascade');
-            // $table->timestamps();
         });
     }
 

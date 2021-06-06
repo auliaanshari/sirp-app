@@ -26,8 +26,8 @@
             <div class="header">
                 <div class="logo logo-dark mt-2">
                     <a href="{{ url('/') }}">
-                        <img src={{asset("image/download.png")}} alt="Logo">
-                        <img class="avatar avatar-image logo-fold ml-3 m-h-10 m-r-15 center" src={{asset("image/download.png")}} alt="Logo" style="width:70%">
+                        <img src={{asset("image/download.jpg")}} alt="Logo">
+                        <img class="avatar avatar-image logo-fold ml-3 m-h-10 m-r-15 center" src={{asset("image/download.jpg")}} alt="Logo" style="width:70%">
                     </a>
                 </div>
                 
@@ -46,23 +46,30 @@
                     </ul>
                     
                     <ul class="nav-left">
-                    <!-- <h1>Sistem Informasi Rekapitulasi Perkuliahan</h1> -->
+                    <h6>Sistem Informasi Rekapitulasi Perkuliahan</h6>
                     </ul>
                     <ul class="nav-right">
                         <li class="dropdown dropdown-animated scale-left">
                             <div class="pointer" data-toggle="dropdown">
-                                <div class="avatar avatar-image  m-h-10 m-r-15">AA
+                                <div class="avatar avatar-image  m-h-10 m-r-15" ><img src="{{asset("image/download.jpg")}}" alt="">
                                 </div>
-                                <span class="mr-4"> Admin <i class="anticon font-size-10 anticon-down"></i> </span>
+                                <span class="mr-4"> {{ Auth::user()->nama }} <i class="anticon font-size-10 anticon-down"></i> </span>
                             </div>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item dropdown">
-                                    <a href="{{ url('logout') }}">
-                                    <i class="anticon anticon-gold"></i>
-                                    <span>Logout</span>
-                                    </a>
-                                </li>
-                            </ul>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item d-block p-h-15 p-v-10" href="{{ url('logout') }}"
+                                onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <i class="anticon opacity-04 font-size-16 anticon-logout"></i>
+                                            <span class="m-l-10" href="{{ url('logout') }}">Logout</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
                         </li>
                         
                     </ul>

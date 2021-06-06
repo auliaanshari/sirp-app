@@ -26,10 +26,6 @@ class Absensi extends Model
         return $this->belongsTo(KRS::class);
     }
 
-    // public function user(){
-    //     return $this->belongsToMany(User::class)->using(KRS::class, 'krs', 'krs_id', 'id');
-    // }
-
     public function pertemuan(){
         return $this->belongsTo(Pertemuan::class);
     }

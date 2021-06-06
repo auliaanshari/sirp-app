@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Hash;
 use DataTables;
 
 class UserController extends Controller
@@ -19,7 +20,7 @@ class UserController extends Controller
         $create->nama = $request->nama_input;
         $create->nim = $request->nim_input;
         $create->email = $request->email_input;
-        $create->password = $request->password_input;
+        $create->password = Hash::make($request->password_input);
         $create->tipe = $request->tipe_input;
         $create->save();
     }
@@ -29,7 +30,7 @@ class UserController extends Controller
         $update->nama = $request->nama_input;
         $update->nim = $request->nim_input;
         $update->email = $request->email_input;
-        $update->password = $request->password_input;
+        $update->password = Hash::make($request->password_input);
         $update->tipe = $request->tipe_input;
         $update->save();
     }

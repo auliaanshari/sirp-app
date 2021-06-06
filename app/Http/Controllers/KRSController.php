@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KRS;
 use App\Models\User;
 use App\Models\Kelas;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -14,6 +15,13 @@ class KRSController extends Controller
     {
         $krs = KRS::with('kelas','user');
         return DataTables::of($krs)->toJson();
+    }
+
+    public function data_absensi($id)
+    {
+        $user = Absensi::where('pertemuan_id',$id)->with('krs')->get();
+        $krs = KRS::where('id', $user)->with('user')->get();
+        return DataTables::of($user)->toJson();
     }
 
     public function create(Request $request){
@@ -59,9 +67,7 @@ class KRSController extends Controller
         
         // $user2 = $user1->user_id;
         
-        $user = User::whereNotIn('id', $user1)->get();
-        
-        // echo($user);
+        $user = User::whereNotIn('id', $user1)->with('krs')->get();
         return $user->toJson();
     }
 }

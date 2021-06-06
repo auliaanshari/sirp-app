@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\KRS;
 use App\Models\Pertemuan;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
+use Auth;
 use DataTables;
 
 class KelasController extends Controller
@@ -16,11 +18,33 @@ class KelasController extends Controller
         return DataTables::of($kelas)->toJson();
     }
 
+    public function data1()
+    {
+        $id = Auth::id(); 
+        $kelas = KRS::where('user_id',$id)->with('kelas','user')->get();
+        return DataTables::of($kelas)->toJson();
+    }
+
     public function detail($id)
     {
         $kelas = Kelas::where('id',$id)->get();
         $kelas_id = $kelas[0]->id;
         return view('kelas.detailkelas', compact('kelas','kelas_id'));
+    }
+
+    public function detail1($id)
+    {
+        $kelas = Kelas::where('id',$id)->get();
+        $kelas_id = $kelas[0]->id;
+        return view('kelas.lihatdetailkelas', compact('kelas','kelas_id'));
+    }
+
+    public function data2()
+    {
+        $id = Auth::id();
+        $id1 = KRS::where('user_id',$id)->with('kelas','user')->get(); 
+        $kelas = Absensi::where('krs_id',$id1[0]->id)->with('krs','pertemuan')->get();
+        return DataTables::of($kelas)->toJson();
     }
 
     public function data_mahasiswa($id)

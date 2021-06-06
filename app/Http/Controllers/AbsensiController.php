@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\KRS;
 use App\Models\Pertemuan;
-use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -56,10 +56,21 @@ class AbsensiController extends Controller
         return $kelas->toJson();
     }
 
-    public function combo_user1($id)
+    public function combo_user1()
     {
-        $user1 = KRS::select('user_id')->where('kelas_id', $id)->get();
-        $user = User::whereNotIn('id', $user1)->get();
-        return $user->toJson();
+        $data = DB::table('krs')->leftjoin('user', 'krs.user_id', '=', 'user.id')
+                    // ->leftJoin('absensi', 'absensi.krs_id', '=', 'krs.id')
+                    // ->leftJoin('user', 'krs.user_id', '=', 'user.id')
+                    ->select('user.nim','user.nama', 'krs.id')
+                    // ->where('pertemuan.id', $id)
+                    ->get();
+
+        // $user1 = KRS::select('user_id')->where('kelas_id', $id)->get();
+        
+        // $user2 = $user1->user_id;
+        // dd($data);
+        // $user = User::whereNotIn('id', $user1)->with('krs')->get();
+        return $data->toJson();
     }
+
 }
